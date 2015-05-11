@@ -1,0 +1,75 @@
+
+
+      {
+          "US" : {
+              "nuclear weapons" : 23,
+              "inequality" : 27,
+              "religious and ethnic hatred" : 24,
+              "pollution and environment" : 15,
+              "AIDS and other diseases" : 7
+          },
+          "Spain" : {
+              "nuclear weapons" : 17,
+              "inequality" : 54,
+              "religious and ethnic hatred" : 14,
+              "pollution and environment" : 9,
+              "AIDS and other diseases" : 5
+          },
+          "Greece" : {
+              "nuclear weapons" : 22,
+              "inequality" : 43,
+              "religious and ethnic hatred" : 10,
+              "pollution and environment" : 14,
+              "AIDS and other diseases" : 9
+          },
+          "Germany" : {
+              "nuclear weapons" : 19,
+              "inequality" : 34,
+              "religious and ethnic hatred" : 32,
+              "pollution and environment" : 13,
+              "AIDS and other diseases" : 2
+          },
+          "Poland" : {
+              "nuclear weapons" : 18,
+              "inequality" : 32,
+              "religious and ethnic hatred" : 14,
+              "pollution and environment" : 13,
+              "AIDS and other diseases" : 9
+          },
+          "Italy" : {
+              "nuclear weapons" : 20,
+              "inequality" : 32,
+              "religious and ethnic hatred" : 15,
+              "pollution and environment" : 25,
+              "AIDS and other diseases" : 6
+          },
+          "France" : {
+              "nuclear weapons" : 14,
+              "inequality" : 32,
+              "religious and ethnic hatred" : 32,
+              "pollution and environment" : 17,
+              "AIDS and other diseases" : 5
+          },
+          "UK" : {
+              "nuclear weapons" : 10,
+              "inequality" : 25,
+              "religious and ethnic hatred" : 39,
+              "pollution and environment" : 16,
+              "AIDS and other diseases" : 4
+          },
+          "Ukraine" : {
+              "nuclear weapons" : 36,
+              "inequality" : 15,
+              "religious and ethnic hatred" : 23,
+              "pollution and environment" : 11,
+              "AIDS and other diseases" : 12
+          },
+          "Russia" : {
+              "nuclear weapons" : 29,
+              "inequality" : 19,
+              "religious and ethnic hatred" : 27,
+              "pollution and environment" : 13,
+              "AIDS and other diseases" : 10
+          }
+      }
+  

@@ -30,7 +30,7 @@ worldThreats = (function(){
 
     function initChart(type){
 
-        var xAxis, yAxis, yScale, text ;
+        var xAxis, yAxis, text;
 
         svg = d3.select('#chart').append('svg')
             .attr('width', w + margin.left + margin.right)
@@ -49,21 +49,7 @@ worldThreats = (function(){
             .tickPadding(4);
 
         svg.selectAll('rect')
-            .data(data)
-            .enter()
-            .append('rect')
-            .attr('class', 'bar')
-            .attr('x', function(d){
-                return xScale(d);
-            })
-            .attr('y', function(d){
-                return 300 - yScale(d);
-            })
-            .attr('width', xScale.rangeBand())
-            .attr('height', function(d){
-                return yScale(d);
-            })
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .call(buildChart);
 
         text = svg.selectAll("text")
             .data(data)
@@ -71,12 +57,14 @@ worldThreats = (function(){
             .append("text");
 
         text.attr('x', function(d){
-            return xScale(d) + xScale.rangeBand() - (xScale.rangeBand() * .05);
-        })
+                return xScale(d) + xScale.rangeBand() - (xScale.rangeBand() * .05);
+            })
             .attr('y', function(d){
                 return 370 - yScale(d);
             })
-            .text( function (d) { return d; })
+            .text( function (d) {
+                return d;
+            })
             .attr("font-family", "sans-serif")
             .attr("font-size", "12px")
             .attr("fill", "#fff");
@@ -102,6 +90,38 @@ worldThreats = (function(){
         threat.text(type)
     }
 
+    function buildChart(selection){
+        selection
+            .data(data)
+            .enter()
+            .append('rect')
+            .attr('class', 'bar')
+            .attr('x', function(d){
+                return xScale(d);
+            })
+            .attr('y', function(d){
+                return 300 - yScale(d);
+            })
+            .attr('width', xScale.rangeBand())
+            .attr('height', function(d){
+                return yScale(d);
+            })
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    }
+
+    function tweenBars(selection){
+        selection
+            .data(data)
+            .transition()
+            .duration(500)
+            .attr('y', function(d){
+                return 300 - yScale(d);
+            })
+            .attr('height', function(d){
+                return yScale(d);
+            })
+    }
+
     function update(type){
 
         var newtext;
@@ -118,15 +138,7 @@ worldThreats = (function(){
         yScale = d3.scale.linear().domain([0, d3.max(data)]).range([0, h]);
 
         svg.selectAll('rect')
-            .data(data)
-            .transition()
-            .duration(500)
-            .attr('y', function(d){
-                return 300 - yScale(d);
-            })
-            .attr('height', function(d){
-                return yScale(d);
-            })
+            .call(tweenBars)
 
         newtext = svg.selectAll("text")
             .data(data)

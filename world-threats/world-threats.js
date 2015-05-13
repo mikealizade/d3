@@ -119,7 +119,7 @@ worldThreats = (function(){
             })
             .attr('height', function(d){
                 return yScale(d);
-            })
+            });
     }
 
     function update(type){

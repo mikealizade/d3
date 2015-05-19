@@ -269,31 +269,3 @@ weightTracker = (function(){
     initialise('2014', false);
 
 })();
-
-/*svg.append("g")
- .attr("class", "grid")
- .attr("transform", "translate(40," + h + ")")
- .call(xGridLine()
- .tickSize(-h, 0, 0)
- .tickFormat("")
- )*/
-
-
-
-/*line = d3.svg.line()
- .x(function(d, i) {
- return xScale(dates[i]);
- })
- .y(function(d, i) {
- return yScale(kgs[i]);
- })
- .interpolate('linear');
-
- path
- .datum(data)
- .transition()
- .duration(450)
- .attr('d', line)
- .attr('stroke', '#1E8F27')
- .attr('stroke-width', 2)
- .attr('fill', 'none');*/

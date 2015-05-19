@@ -7,12 +7,19 @@ body {
     color: #666;
 }
 
+h1 {
+    padding: 20px 0 0 0;
+    margin: 0;
+}
+
+label {
+    font-size: .8rem;
+}
+
 #weight-tracker {
     text-align: center;
     border-radius: 3px;
-    xbox-shadow: 2px 2px 2px #cfcfcf;
     background-color: #fff;
-    xborder:1px solid #d9d9d9;
     width: 880px;
     margin: 60px auto 0;
 
@@ -43,11 +50,20 @@ svg {
 
 }
 
+.y {
+    stroke-width: 0;
+}
+
 .axis path,
 .axis line {
     fill: none;
     stroke: #999;
     shape-rendering: crispEdges;
+}
+
+.axis.hidden,
+.grid.hidden{
+    display: none;
 }
 
 text {
@@ -61,6 +77,9 @@ text {
 }
 .grid path {
     stroke-width: 0;
+}
+.grid path.active {
+    stroke: red;
 }
 
 /*.tick {
@@ -83,18 +102,17 @@ text {
 }
 
 .tip.active {
-    fill:#fff;
-    stroke: #1E8F27;
-    stroke-width: 1;
+    fill:#c5c5c5;
+    stroke-width: 0;
     opacity: .8;
     width: 80px;
     height: 40px;
     mask: url(#dropshadow);
-
+    box-shadow: 1px 2px 1px #333;
 }
 
 .tip text {
-    fill: #222;
+    fill: #000;
     font-weight: normal;
     text-anchor: middle;
     stroke-width:0;
@@ -107,5 +125,5 @@ text {
 .tip .weight {
     font-size: 12px;
     font-weight: bold;
-    fill:#000;
 }
+

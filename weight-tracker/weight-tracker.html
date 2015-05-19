@@ -10,7 +10,11 @@
 
 <body>
     <div id="weight-tracker">
-        <h1>Weight Tracker</h1>
+        <h1 id="history"></h1>
+        <label><input type="radio" class="unit" name="unit" id="kg" checked="checked" />Kgs</label>
+        <label><input type="radio" class="unit" name="unit" id="lb" />Lbs</label>
+        <label><input type="radio" class="year" name="year" id="2014" checked="checked" />2014</label>
+        <label><input type="radio" class="year" name="year" id="2015" />2015</label>
         <div id="chart"></div>
     </div>
     <script src="../jquery.min.js"></script>

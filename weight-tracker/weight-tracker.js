@@ -1,9 +1,6 @@
 var weightTracker = {} || weightTracker;
 
-// 3 visual improvements
-// date range selector
 // daily calorie dial
-// optimise and tidy js
 
 weightTracker = (function(){
 
@@ -38,6 +35,7 @@ weightTracker = (function(){
 
             setUnit();
             initChart(b);
+            toggleYAxes();
             $('#history').html(name + '\'s weight loss history')
         })
 
@@ -68,14 +66,6 @@ weightTracker = (function(){
             .scale(yScale)
             .orient('left');
 
-        yScaleLb = d3.scale.linear()
-            .domain(d3.extent(lbs))
-            .range([h, 0]);
-
-        yAxisLb = d3.svg.axis()
-            .scale(yScaleLb)
-            .orient('left');
-
         if(!b){
             appendElements();
         }
@@ -87,28 +77,14 @@ weightTracker = (function(){
     function appendElements(){
         svg = d3.select('#chart')
             .append('svg')
+            .attr('id', '#svg')
             .attr('width', w + margin.left + margin.right)
             .attr('height', h + margin.top + margin.bottom)
 
         path = svg.append('g')
+            .attr('id', 'path')
             .attr('transform', 'translate(40, 70)')
             .append('path')
-
-        svg.append("g")
-            .attr("class", "grid kg")
-            .attr("transform", "translate(40," + 70 + ")")
-            .call(yGridLine()
-                .tickSize(-w, 0, 0)
-                .tickFormat("")
-        );
-
-        svg.append("g")
-            .attr("class", "grid lb")
-            .attr("transform", "translate(40," + 70 + ")")
-            .call(yGridLineLb()
-                .tickSize(-w, 0, 0)
-                .tickFormat("")
-        );
 
         svg.append('g')
             .attr('class', 'x axis')
@@ -116,14 +92,18 @@ weightTracker = (function(){
             .call(xAxis);
 
         svg.append('g')
-            .attr('class', 'y axis kg')
-            .attr('transform', 'translate(40, 50)')
+            .attr('class', 'y axis currentY')
+            .attr('transform', 'translate(40, 70)')
             .call(yAxis);
 
-        svg.append('g')
-            .attr('class', 'y axis lb hidden')
-            .attr('transform', 'translate(40, 50)')
-            .call(yAxisLb);
+        svg.append("g")
+            .attr("class", "grid currentY")
+            .attr("transform", "translate(40," + 70 + ")")
+            .call(yGridLine()
+                .tickSize(-w, 0, 0)
+                .tickFormat("")
+        );
+
         svg.append('g').attr('id', 'tooltip')
             .attr('transform', 'translate(-100,-100)')
             .attr('class', 'tip')
@@ -163,23 +143,6 @@ weightTracker = (function(){
 
     function setPlots(){
 
-        var axisKg = d3.select('.axis.kg'),
-            axisLb = d3.select('.axis.lb'),
-            gridKg = d3.select('.grid.kg'),
-            gridLb = d3.select('.grid.lb');
-
-        if(selectedUnit === 'kg'){
-            axisKg.classed('hidden', false);
-            axisLb.classed('hidden', true);
-            gridKg.classed('hidden', false);
-            gridLb.classed('hidden', true);
-        } else {
-            axisKg.classed('hidden', true);
-            axisLb.classed('hidden', false);
-            gridKg.classed('hidden', true);
-            gridLb.classed('hidden', false);
-        }
-
         svg.selectAll('circle')
             .data(data)
             .enter()
@@ -208,6 +171,41 @@ weightTracker = (function(){
                 d3.select(this).classed('active', false);
                 toggleToolTip(false);
             })
+    }
+
+    function toggleYAxes(){
+        d3.selectAll('.currentY').remove();
+
+        yScale = d3.scale.linear()
+            .domain(d3.extent(units))
+            .range([h, 0]);
+
+        yAxis = d3.svg.axis()
+            .scale(yScale)
+            .orient('left');
+
+        svg.append('g')
+            .attr('class', 'y axis currentY')
+            .attr('transform', 'translate(40, 70)')
+            .call(yAxis);
+
+        function yGridLine() {
+            return d3.svg.axis()
+                .scale(yScale)
+                .orient("left")
+                .ticks(data.length)
+        }
+
+        d3.select('#path').append("g")
+            .attr("class", "y grid currentY")
+            .attr('id', '#grid')
+
+            .call(yGridLine()
+                .tickSize(-w, 0, 0)
+                .tickFormat("")
+        );
+
+        $('.currentY').animate({'opacity' : 1}, 100)
     }
 
     function movePlots(){
@@ -241,22 +239,14 @@ weightTracker = (function(){
             .ticks(data.length)
     }
 
-    function yGridLineLb() {
-        return d3.svg.axis()
-            .scale(yScaleLb)
-            .orient("left")
-            .ticks(data.length)
-    }
-
     function toggleToolTip(b, xVal, yVal, date, weight){
         date = String(date).substr(4, 11);
         if(b){
             d3.select('#tooltip')
-                .attr('transform', 'translate(' + (xVal) + ',' + (yVal) + ')')
+                .attr('transform', 'translate(' + (xVal + 5) + ',' + (yVal + 20) + ')')
                 .classed('active', true);
 
-            d3.select('.content text').remove();
-            d3.select('.content text').remove();
+            d3.selectAll('.content text').remove();
             d3.select('.content').append('text').attr('class', 'date').text(date);
             d3.select('.content').append('text').attr('class', 'weight').attr('transform', 'translate(2,15)').text(weight + selectedUnit);
         } else {
@@ -268,6 +258,7 @@ weightTracker = (function(){
     $('.unit').on('click', function () {
         selectedUnit = this.id === 'kg' ? 'kg' : 'lb';
         setUnit();
+        toggleYAxes();
     })
 
     $('.year').on('click', function () {

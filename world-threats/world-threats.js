@@ -8,7 +8,7 @@ worldThreats = (function(){
         margin = {top : 40, bottom : 40, left : 40, right: 40},
         w = 800,
         h = 300,
-        svg, yScale, xScale,
+        svg, yScale, xScale, xAxis, yAxis, text,
         threat = $('#danger').find('span');
 
     function initialise(type){
@@ -30,8 +30,6 @@ worldThreats = (function(){
 
     function initChart(type){
 
-        var xAxis, yAxis, text;
-
         svg = d3.select('#chart').append('svg')
             .attr('width', w + margin.left + margin.right)
             .attr('height', h + margin.top + margin.bottom)
@@ -45,47 +43,18 @@ worldThreats = (function(){
             .orient('bottom')
             .ticks(5)
             .innerTickSize(6)
-            /*.outerTickSize(12)*/
             .tickPadding(4);
 
         svg.selectAll('rect')
             .call(buildChart);
 
-        text = svg.selectAll("text")
-            .data(data)
-            .enter()
-            .append("text");
-
-        text.attr('x', function(d){
-                return xScale(d) + xScale.rangeBand() - (xScale.rangeBand() * .05);
-            })
-            .attr('y', function(d){
-                return 370 - yScale(d);
-            })
-            .text( function (d) {
-                return d;
-            })
-            .attr("font-family", "sans-serif")
-            .attr("font-size", "12px")
-            .attr("fill", "#fff");
+        svg.selectAll('text')
+            .call(initText);
 
         svg.append('g')
             .attr('class', 'xaxis')
             .attr('transform', 'translate(40, '+ (h + 50) + ')')
             .call(xAxis);
-
-        /*yScale = d3.scale.linear()
-         .domain([0, d3.max(data)])
-         .range([h, 0]);
-
-         yAxis = d3.svg.axis()
-         .scale(yScale)
-         .orient('left');
-
-         svg.append('g')
-         .attr('class', 'yaxis')
-         .attr('transform', 'translate(30, 40)')
-         .call(yAxis);*/
 
         threat.text(type)
     }
@@ -100,13 +69,16 @@ worldThreats = (function(){
                 return xScale(d);
             })
             .attr('y', function(d){
-                return 300 - yScale(d);
+                return 300;
             })
             .attr('width', xScale.rangeBand())
             .attr('height', function(d){
-                return yScale(d);
+                return 0;
             })
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        svg.selectAll('rect')
+            .call(tweenBars)
     }
 
     function tweenBars(selection){
@@ -122,9 +94,34 @@ worldThreats = (function(){
             });
     }
 
-    function update(type){
+    function initText(selection){
+        selection
+            .data(data)
+            .enter()
+            .append("text")
+            .attr('x', function(d){
+                return xScale(d) + xScale.rangeBand() - (xScale.rangeBand() * .05);
+            })
+            .attr('y', function(d){
+                return 370;
+            })
+            .text( function (d) {
+                return d;
+            })
+            .attr('class', 'values')
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "12px")
+            .attr("fill", "#fff");
 
-        var newtext;
+        svg.selectAll("text.values")
+            .transition()
+            .duration(500)
+            .attr('y', function(d){
+                return 370 - yScale(d);
+            })
+    }
+
+    function update(type){
         data = [];
 
         $.getJSON('dangers.json', function (json) {
@@ -140,14 +137,13 @@ worldThreats = (function(){
         svg.selectAll('rect')
             .call(tweenBars)
 
-        newtext = svg.selectAll("text")
+        svg.selectAll("text")
             .data(data)
             .transition()
             .duration(500)
-
-        newtext.attr('y', function(d){
-            return 370 - yScale(d);
-        })
+            .attr('y', function(d){
+                return 370 - yScale(d);
+            })
             .text( function (d) { return d; })
 
         threat.text(type)

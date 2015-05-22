@@ -7,8 +7,9 @@ weightTracker = (function(){
     var data = [],
         trackerObj,
         margin = {top : 90, bottom : 20, left : 40, right: 40},
-        w = 800,
-        h = areaHeight = 450,
+        w = 600,
+        h = 400,
+        areaHeight = 400,
         svg,
         yScale, xScale, xAxis, yAxis, text, name, dates = [], kgs = [], lbs = [], line,
         weight, units, selectedUnit = 'kg', selectedYear;
@@ -36,7 +37,6 @@ weightTracker = (function(){
             setUnit();
             initChart(b);
             toggleYAxes();
-            $('#history').html(name + '\'s weight loss history')
         })
 
     }
@@ -56,7 +56,8 @@ weightTracker = (function(){
             .ticks(12)
             .innerTickSize(6)
             .outerTickSize(0)
-            .tickPadding(4);
+            .tickPadding(4)
+            .tickFormat(function(d) { return d3.time.format('%b')(new Date(d)); });
 
         yScale = d3.scale.linear()
             .domain(d3.extent(units))
@@ -68,10 +69,10 @@ weightTracker = (function(){
 
         if(!b){
             appendElements();
+            setChart();
         }
-        setPlots();
         movePlots();
-        displayChart();
+        tweenChart();
     }
 
     function appendElements(){
@@ -115,9 +116,62 @@ weightTracker = (function(){
             .append('g')
             .attr('class', 'content')
             .attr('transform', 'translate(36, 17)');
+
+       d3.selectAll('.x .tick text').attr('transform', 'translate(25, 0)')
+
     }
 
-    function displayChart(){
+    function setChart(){
+        area = d3.svg.area()
+            .interpolate('cardinal')
+            .x(function(d, i) {
+                return xScale(dates[i]);
+            })
+            .y0(function (d) {
+                return areaHeight;
+            })
+            .y1(function(d, i) {
+                return areaHeight;
+            });
+
+        path
+            .datum(data)
+            .attr('d', area)
+            .attr('stroke', '#1E8F27')
+            .attr('stroke-width', 1)
+            .attr('fill', 'rgba(30, 143, 39, .1)');
+
+        svg.selectAll('circle')
+            .data(data)
+            .enter()
+            .append('circle')
+            .attr('transform', 'translate(40, 70)')
+            .attr('class', 'bubble')
+            .attr('cx', function (d, i) {
+                return xScale(dates[i]);
+            })
+            .attr('cy', function (d, i) {
+                return areaHeight;
+            })
+            .attr('r', function (d) {
+                return 4;
+            })
+            .on('mouseover', function (d, i) {
+                d3.select(this).attr('r', 6);
+                d3.select(this).classed('active', true);
+                yScale = d3.scale.linear()
+                    .domain(d3.extent(units))
+                    .range([h, 0]);
+                toggleToolTip(true, xScale(dates[i]), yScale(units[i]), dates[i], units[i])
+            })
+            .on('mouseout', function (d) {
+                d3.select(this).attr('r', 4);
+                d3.select(this).classed('active', false);
+                toggleToolTip(false);
+            })
+    }
+
+    function tweenChart(){
         area = d3.svg.area()
             .interpolate('cardinal')
             .x(function(d, i) {
@@ -139,38 +193,6 @@ weightTracker = (function(){
             .attr('stroke', '#1E8F27')
             .attr('stroke-width', 1)
             .attr('fill', 'rgba(30, 143, 39, .1)');
-    }
-
-    function setPlots(){
-
-        svg.selectAll('circle')
-            .data(data)
-            .enter()
-            .append('circle')
-            .attr('transform', 'translate(40, 70)')
-            .attr('class', 'bubble')
-            .attr('cx', function (d, i) {
-                return xScale(dates[i]);
-            })
-            .attr('cy', function (d, i) {
-                return yScale(units[i]);
-            })
-            .attr('r', function (d) {
-                return 4;
-            })
-            .on('mouseover', function (d, i) {
-                d3.select(this).attr('r', 6);
-                d3.select(this).classed('active', true);
-                yScale = d3.scale.linear()
-                    .domain(d3.extent(units))
-                    .range([h, 0]);
-                toggleToolTip(true, xScale(dates[i]), yScale(units[i]), dates[i], units[i])
-            })
-            .on('mouseout', function (d) {
-                d3.select(this).attr('r', 4);
-                d3.select(this).classed('active', false);
-                toggleToolTip(false);
-            })
     }
 
     function toggleYAxes(){

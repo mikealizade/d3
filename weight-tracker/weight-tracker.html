@@ -9,17 +9,22 @@
 </head>
 
 <body>
-    <div id="weight-tracker">
-        <h1 id="history"></h1>
-        <label><input type="radio" class="year" name="year" id="2014" checked="checked" />2014</label>
-        <label><input type="radio" class="year" name="year" id="2015" />2015</label>
-        <label id="unit"><input type="radio" class="unit" name="unit" id="kg" checked="checked" />Kgs</label>
-        <label><input type="radio" class="unit" name="unit" id="lb" />Lbs</label>
-
-        <div id="chart"></div>
+    <div id="charting" class="clearfix">
+        <h1 id="history">Interactive weight loss history and calorie intake chart</h1>
+        <div id="weight-tracker">
+            <div id="radios">
+                <label><input type="radio" class="year" name="year" id="2014" checked="checked" />2014</label>
+                <label><input type="radio" class="year" name="year" id="2015" />2015</label>
+                <label><input type="radio" class="unit" name="unit" id="kg" checked="checked" />Kgs</label>
+                <label><input type="radio" class="unit" name="unit" id="lb" />Lbs</label>
+            </div>
+            <div id="chart"></div>
+        </div>
+        <div id="calories"><h2 id="more-data">Mouse over the chart to view more data</h2></div>
     </div>
     <script src="../jquery.min.js"></script>
     <script src="../d3.min.js"></script>
     <script src="weight-tracker.js"></script>
+    <script src="calorie-tracker.js"></script>
 </body>
 </html>

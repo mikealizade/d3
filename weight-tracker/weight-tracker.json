@@ -1,6 +1,10 @@
 {
     "id" : 1,
     "name" : "Mike Alizade",
+    "totalCalories" : "2250",
+    "currentConsumed" : "1438",
+    "caloriesBurned" : "467",
+    "excessConsumed" : "343",
     "2014" : [
         {
             "date" : "20140101",
@@ -58,7 +62,7 @@
             "lb" : 226.16
         },
         {
-            "date" : "20141201",
+            "date" : "20141231",
             "kg" : 101.4,
             "lb" : 223.08
         }

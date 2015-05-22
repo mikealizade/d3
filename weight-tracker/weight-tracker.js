@@ -1,8 +1,4 @@
-var weightTracker = {} || weightTracker;
-
-// daily calorie dial
-
-weightTracker = (function(){
+var weightTracker = (function(){
 
     var data = [],
         trackerObj,
@@ -38,7 +34,6 @@ weightTracker = (function(){
             initChart(b);
             toggleYAxes();
         })
-
     }
 
     function setUnit(){

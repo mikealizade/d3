@@ -100,7 +100,7 @@ var calorieTracker = (function(d){
             });
 
         this.fgColour.transition()
-            .duration(750)
+            .duration(1300)
             .call(this.arcTween, this.ofCirc, instance);
     }
 

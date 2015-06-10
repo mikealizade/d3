@@ -182,7 +182,7 @@ var weightTracker = (function(){
         path
             .datum(data)
             .transition()
-            .duration(400)
+            .duration(1000)
             .ease('exp')
             .attr('d', area)
             .attr('stroke', '#1E8F27')
@@ -228,7 +228,7 @@ var weightTracker = (function(){
     function movePlots(){
         svg.selectAll('circle')
             .transition()
-            .duration(400)
+            .duration(1000)
             .ease('exp')
             .attr('cx', function (d, i) {
                 return xScale(dates[i]);
